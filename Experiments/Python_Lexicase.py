@@ -1,12 +1,3 @@
-###############################################
-###########_Select_Lexicase_variant_###########
-#Full_Lexicase = 1
-#Down_Sampled_Lexicase = 0
-#Pooled_Lexicase = 0
-#Cohort_Lexicase = 0
-###############################################
-###############################################
-
 #libraries
 import numpy
 import copy
