@@ -45,11 +45,8 @@ def lex(d_dir, GENRATIONS):
       # Check to see if directory exists
       if(os.path.isdir(dir) and os.path.getsize(dir+POP_FILE)>0):
         # Get the last row and check if we finished the run
-        print('BEFORE=', dir+POP_FILE)
         f = pd.read_csv(dir+POP_FILE)
-        print('AFTER=', dir+POP_FILE)
 
-        print(f)
         last = int(f.tail(1).values.tolist()[0][0])
 
         if(last  < GENRATIONS):
@@ -70,127 +67,6 @@ def lex(d_dir, GENRATIONS):
 
 
 
-######################## TOURNAMENT ########################
-TRN_SIZE = [7, 100, 500, 700, 1000]
-TRN_OFFSET = 500
-TRN_DIR_1 = "SEL_TOURNAMENT__DIA_Exploitation__POP___TRT_100__TOURN_"
-TRN_DIR_2 = "__SEED_"
-
-def tour(d_dir, GENRATIONS):
-  print('-----------------------------'*4)
-  print('Processing Tournament Runs-' + str(NOW))
-
-  lost = []
-
-  for i in range(len(TRN_SIZE)):
-    for r in range(1,REPLICATES+1):
-      # Create the directory
-      seed = (r + (i * 100)) + TRN_OFFSET + REPLICATION_OFFSET
-      dir = d_dir + TRN_DIR_1 + str(TRN_SIZE[i]) + TRN_DIR_2 + str(seed)
-
-      # Check to see if directory exists
-      if(os.path.isdir(dir)):
-        # Get the last row and check if we finished the run
-        f = pd.read_csv(dir+POP_FILE)
-        last = int(f.tail(1).values.tolist()[0][0])
-
-        if(last  < GENRATIONS):
-          lost.append(seed)
-          print(dir + '===FOUND===NOGO===' + str(last))
-
-        else:
-          print(dir + '===FOUND===FINISHED')
-
-      else:
-        print(dir + '===NOGO')
-        lost.append(seed)
-
-
-  print('SEED INCOMPLETE/UNCREATED=', lost)
-  print('-----------------------------'*4)
-  print()
-
-
-######################## DOWN SAMPLED ########################
-DSL_PROP = ['.05', '.10', '.25', '.50', '1.0']
-DSL_OFFSET = 1500
-DSL_DIR_1 = "SEL_DOWN__DIA_Exploitation__POP_1000__TRT_100__PROP_"
-DSL_DIR_2 = "__SEED_"
-
-def dsl(d_dir, GENRATIONS):
-  print('-----------------------------'*4)
-  print('Processing Down Sampled Runs-' + str(NOW))
-
-  lost = []
-
-  for i in range(len(DSL_PROP)):
-    for r in range(1,REPLICATES+1):
-      # Create the directory
-      seed = (r + (i * 100)) + DSL_OFFSET + REPLICATION_OFFSET
-      dir = d_dir + DSL_DIR_1 + DSL_PROP[i] + DSL_DIR_2 + str(seed)
-
-      # Check to see if directory exists
-      if(os.path.isdir(dir)):
-        # Get the last row and check if we finished the run
-        f = pd.read_csv(dir+POP_FILE)
-        last = int(f.tail(1).values.tolist()[0][0])
-
-        if(last  < GENRATIONS):
-          lost.append(seed)
-          print(dir + '===FOUND===NOGO===' + str(last))
-
-        else:
-          print(dir + '===FOUND===FINISHED')
-
-      else:
-        print(dir + '===NOGO')
-        lost.append(seed)
-
-
-  print('SEED INCOMPLETE/UNCREATED=', lost)
-  print('-----------------------------'*4)
-  print()
-
-
-######################## COHORT ########################
-COH_PROP = ['.05', '.10', '.25', '.50', '1.0']
-COH_OFFSET = 1000
-COH_DIR_1 = "SEL_COHORT__DIA_Exploitation__POP_1000__TRT_100__PROP_"
-COH_DIR_2 = "__SEED_"
-
-def coh(d_dir, GENRATIONS):
-  print('-----------------------------'*4)
-  print('Processing Cohort Runs-' + str(NOW))
-
-  lost = []
-
-  for i in range(len(COH_PROP)):
-    for r in range(1,REPLICATES+1):
-      # Create the directory
-      seed = (r + (i * 100)) + COH_OFFSET + REPLICATION_OFFSET
-      dir = d_dir + COH_DIR_1 + COH_PROP[i] + COH_DIR_2 + str(seed)
-
-      # Check to see if directory exists
-      if(os.path.isdir(dir)):
-        # Get the last row and check if we finished the run
-        f = pd.read_csv(dir+POP_FILE)
-        last = int(f.tail(1).values.tolist()[0][0])
-
-        if(last  < GENRATIONS):
-          lost.append(seed)
-          print(dir + '===FOUND===NOGO===' + str(last))
-
-        else:
-          print(dir + '===FOUND===FINISHED')
-
-      else:
-        print(dir + '===NOGO')
-        lost.append(seed)
-
-
-  print('SEED INCOMPLETE/UNCREATED=', lost)
-  print('-----------------------------'*4)
-  print()
 
 def main():
   # Generate the arguments
