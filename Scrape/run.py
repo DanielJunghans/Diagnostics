@@ -46,6 +46,7 @@ def lex(d_dir, GENRATIONS):
       if(os.path.isdir(dir) and os.path.exists(dir+POP_FILE)):
         # Get the last row and check if we finished the run
         f = pd.read_csv(dir+POP_FILE)
+        print(f)
         last = int(f.tail(1).values.tolist()[0][0])
 
         if(last  < GENRATIONS):
