@@ -19,7 +19,7 @@ import pandas as pd
 # VARIABLES EVERYONE NEEDS TO KNOW
 REPLICATION_OFFSET=0
 DATA_DIR='/mnt/scratch/junghan2/Diagnostics/Data/'
-POP_FILE = "/Pop.csv"
+POP_FILE = "/Unique_Genomes_Pop.csv"
 REPLICATES = 100
 NOW = datetime.datetime.now()
 
