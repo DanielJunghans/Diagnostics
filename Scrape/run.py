@@ -43,7 +43,7 @@ def lex(d_dir, GENRATIONS):
       dir = d_dir + LEX_DIR_1 + str(LEX_POP_SIZE[i]) + LEX_DIR_2 + str(seed)
 
       # Check to see if directory exists
-      if(os.path.isdir(dir) or os.path.exists(dir+POP_FILE)):
+      if(os.path.isdir(dir) and os.path.exists(dir+POP_FILE)):
         # Get the last row and check if we finished the run
         f = pd.read_csv(dir+POP_FILE)
         last = int(f.tail(1).values.tolist()[0][0])
