@@ -88,14 +88,24 @@ def Avg_Err_Total(Population, Number_Of_Traits):
 def Unique_Genomes(Population):
     return [len({tuple(Population[i]['Trait Scores']) for i in range(len(Population))})]
 
+#This function will keep track of the best organism
+def Best_Organism(Population, Number_Of_Traits, Target):
+    Current_Min = Number_Of_Traits*Target
+    for Pop in range(len(Population)):
+        Box = 0
+        for Traits in range(Number_Of_Traits):
+            Box += Population[Pop]['Trait Scores'][Traits]
+        if Box < Current_Min:
+            Current_Min = Box
+    return [Current_Min]
 
 #parameters
 Population_Size = 1000
 Number_Of_Traits = 100
-Fitness = 100
+Target = 100
 Number_Of_Generations = 1
-Mutation_Rate = .01
-Threshold_Pass_Rate = 90
+Mutation_Rate = .009
+Threshold_Pass_Rate = 99
 
 #argument list
 Arg_List = sys.argv
@@ -135,36 +145,44 @@ for Col_Name in range(Number_Of_Traits):
 
 
 #csv writing for mininimum error
-f = open(Directory+'Min_Err_Pop.csv','w')
+f = open(Directory+'Min_Err.csv','w')
 writer1 = csv.writer(f)
 Col = ['Generations']+Col_Names
 writer1.writerow(Col)
 
 
 #csv writing for average error
-e = open(Directory+'Avg_Err_Pop.csv','w')
+e = open(Directory+'Avg_Err.csv','w')
 writer2 = csv.writer(e)
 Col = ['Generations']+Col_Names
 writer2.writerow(Col)
 
 
 #csv writing for solution count
-g = open(Directory+'Sol_Cnt_Pop.csv','w')
+g = open(Directory+'Sol_Cnt.csv','w')
 writer3 = csv.writer(g)
 Col = ['Generations']+Col_Names
 writer3.writerow(Col)
 
 #total average error
-h = open(Directory+'Tot_Avg_Pop.csv','w')
+h = open(Directory+'Tot_Avg.csv','w')
 writer4 = csv.writer(h)
 Col = ['Generations']+['Total Avg Err']
 writer4.writerow(Col)
 
 #Unique Genomes
-i = open(Directory+'Unique_Genomes_Pop.csv','w')
+i = open(Directory+'Unique_Genomes.csv','w')
 writer5 = csv.writer(i)
 Col = ['Generations']+['Unique Genomes']
 writer5.writerow(Col)
+
+#Best Score
+j = open(Directory+'Best_Candidate.csv','w')
+writer6 = csv.writer(j)
+Col = ['Generations']+['Best Aggregate Fitness']
+writer6.writerow(Col)
+
+
 
 #this outer for loop represents generations 
 for Generations in range(Number_Of_Generations):
@@ -180,11 +198,14 @@ for Generations in range(Number_Of_Generations):
     #Solution count (This line writes a row for the solution count csv containing all the values from the solution function)
     writer3.writerow([Generations] + Sol_Count(Current_Population,Number_Of_Traits,Threshold_Pass_Rate))
 
-    #Total Average Error (This line writes a row for the total average error csv containing all the values from the solution function)
+    #Total Average Error (This line writes a row for the total average error csv containing all the values from the total average errorfunction)
     writer4.writerow([Generations] + Avg_Err_Total(Current_Population,Number_Of_Traits))
 
-    #Total Average Error (This line writes a row for the total average error csv containing all the values from the solution function)
+    #Unique Genomes (This line writes a row for the Unique Genomes)
     writer5.writerow([Generations] + Unique_Genomes(Current_Population))
+
+    #Best Candidate average Fitness
+    writer6.writerow([Generations] + Best_Organism(Current_Population, Number_Of_Traits, Target))
 
     #offspring pop is created as an empty list and will be used to store the offspring from selected parents and will eventually be set equal to the current population list
     Offspring_Pop = []
@@ -200,16 +221,24 @@ for Generations in range(Number_Of_Generations):
             #if a random uniform number is lower than the mutation rate, a random number on a gaussian distribution will be added/subtracted to a trait
             if numpy.random.uniform(0,1.0) <= Mutation_Rate: 
                 Offspring_Pop[Pop_Size]['Traits'][Mutation] += numpy.random.normal(0.0,2.0) 
+                if Offspring_Pop[Pop_Size]['Traits'][Mutation] < 0:
+                    Offspring_Pop[Pop_Size]['Traits'][Mutation] = 0
+                if Offspring_Pop[Pop_Size]['Traits'][Mutation] > Target:
+                    Offspring_Pop[Pop_Size]['Traits'][Mutation] = Target
+
 
     #after mutation update scores
     Current_Population = Offspring_Pop
     for P in range(Population_Size):
         #these for loops look at the trait scores for each trait for every indivudal and updates them with the get fitness function
         for T in range(Number_Of_Traits):
-            Current_Population[P]['Trait Scores'][T] = Get_Fitness(Current_Population[P]['Traits'][T])  
+            Current_Population[P]['Trait Scores'][T] = Get_Fitness(Current_Population[P]['Traits'][T]) 
+        
+
 #closes the csv writers
 f.close()
 e.close()
 g.close()
 h.close()
 i.close()
+j.close()
