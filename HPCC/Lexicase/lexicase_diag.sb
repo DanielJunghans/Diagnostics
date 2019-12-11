@@ -98,4 +98,4 @@ mkdir -p ${RUN_DIR}
 
 echo "python3 ../../Experiments/Python_Lexicase.py -SEED ${SEED} -POP_SIZE ${POP_SIZE} -DIAGNOSTIC ${DIAGNOSTIC__1} -TRAIT_SIZE__5 ${TRAIT_SIZE__5} > run.log" > ./cmd.txt
 
-python3 ../../Experiments/Python_Lexicase.py ${RUN_DIR} ${SEED} ${POP_SIZE} ${TRAIT_SIZE__5} ${NUMBER_OF_GENS}
+python3 ../../Experiments/Python_Lexicase.py ${RUN_DIR} ${SEED} ${POP_SIZE} ${TRAIT_SIZE__5} ${NUMBER_OF_GENS} > ${RUN_DIR}run.log 
