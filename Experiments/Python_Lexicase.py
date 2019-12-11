@@ -233,8 +233,13 @@ for Generations in range(Number_Of_Generations):
         #these for loops look at the trait scores for each trait for every indivudal and updates them with the get fitness function
         for T in range(Number_Of_Traits):
             Current_Population[P]['Trait Scores'][T] = Get_Fitness(Current_Population[P]['Traits'][T]) 
-        
-
+    f.flush()
+    e.flush()
+    g.flush()
+    h.flush()
+    i.flush()
+    j.flush()
+    
 #closes the csv writers
 f.close()
 e.close()
